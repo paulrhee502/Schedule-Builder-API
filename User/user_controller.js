@@ -1,3 +1,6 @@
+var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
@@ -5,22 +8,74 @@ var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: true}));
 var User = require('./user');
 
-//post new user
-router.post('/', function(req, res) {
-    User.create({
-        username: req.body.username,
-        password: req.body.password
-    },
-    function(err, user) {
+//login user in session
+router.post('/session', function(req, res){
+    User.findOne({username: req.body.username}, async (err, user) => {
         if(err){
-            return res.status(500).send("There was a problem adding the information to the database.");
+            return res.status(500).send("There was a problem accessing the database.");
         }
-        res.status(200).send(user);
-    });
+        if(!user){
+            return res.status(400).send("There is no username registered with the given username. Please try again.");
+        }
+        else{
+            var passwordCorrect = await bcrypt.compare(req.body.password, user.password);
+            if(!passwordCorrect){
+                return res.status(400).send("Incorrect password for the given username. Please try again.");
+            }
+            var jtoken = jwt.sign(
+                {
+                    user: user
+                },
+                'shh',
+                {
+                    issuer: 'paul',
+                    audience: 'tbd',
+                },
+            );
+            return res.status(200).send(jtoken);
+        }
+    })
+})
+
+//register new user
+router.post('/', function(req, res) {
+    User.findOne({ username: req.body.username}, async (err, user) => {
+        if(err){
+            return res.status(500).send("There was a problem accessing the user database");
+        }
+        if(user){
+            return res.status(409).send("User with that username already exists");
+        }
+        else if(req.body.password == ""){
+            return res.status(400).send("Invalid password.")
+        }
+        else{
+            let hashedPassword = await bcrypt.hash(req.body.password, 8);
+            User.create({
+                username: req.body.username,
+                password: hashedPassword,
+                breaks: []
+            }, function(err, user) {
+                if(err){
+                    return status(500).send("There was a problem adding the information to the database.");
+                }
+                var jtoken = jwt.sign(
+                    {
+                    user: user
+                    },
+                    'shh',
+                {
+                    issuer: 'paul',
+                    audience: 'tbd'
+                })
+                return res.send(jtoken);
+            })
+        }
+    })
 });
 
 //return all users in database
-router.get('/', function(req, res) {
+router.get('/all', function(req, res) {
     User.find({}, function(err, users) {
         if(err){
             return res.status(500).send("There was a problem finding the users.");
@@ -29,7 +84,7 @@ router.get('/', function(req, res) {
     });
 });
 
-//return single user from database
+//return single user from database by id
 router.get('/:id', function(req, res) {
     User.findById(req.params.id, function(err, user){
         if(err){
@@ -40,6 +95,19 @@ router.get('/:id', function(req, res) {
         }
         res.status(200).send(user);
     })
+})
+
+router.get('/', function(req, res) {
+    const token = req.query.token;
+    if(!token){
+        return res.status(400).send("JWT required");
+    }
+    jwt.verify(token, 'shh', function(err, decoded){
+        if(err){
+            return res.status(500).send(err);
+        }
+        return res.status(200).send(decoded);
+    });
 })
 
 //delete user from database
