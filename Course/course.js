@@ -1,11 +1,25 @@
 var mongoose = require('mongoose');
 var CourseSchema = new mongoose.Schema({
-    section: [
+    name: String,
+    level: String,
+    subject: String,
+    description: String,
+    prereqs: [
+        {
+            id: String
+        }
+    ],
+    credits: [
+        {
+            field: String
+        }
+    ], 
+    sections: [
         {
             number: Number
         }
     ],
-    time: [
+    times: [
         {
             timeStart: Number,
             timeEnd: Number,
@@ -16,7 +30,7 @@ var CourseSchema = new mongoose.Schema({
             ]
         }
     ],
-    discussion: [
+    discussions: [
         {
             id: String
         }

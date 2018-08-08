@@ -14,4 +14,6 @@ var db = require('./db');
 
 var UserController = require('./User/user_controller');
 app.use('/users', UserController);
+var CourseController = require('./Course/course_controller');
+app.use('/courses', CourseController);
 module.exports = app;

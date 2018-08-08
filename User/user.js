@@ -2,12 +2,11 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    /*courses: [
+    courses: [
         {
-            id: mongoose.Schema.Types.ObjectId,
-            ref: 'Course'
+            id: String
         }
-    ],*/
+    ],
     breaks: [
         {
             timeStart: Number,

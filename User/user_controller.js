@@ -54,7 +54,8 @@ router.post('/', function(req, res) {
             User.create({
                 username: req.body.username,
                 password: hashedPassword,
-                breaks: []
+                breaks: [],
+                courses: []
             }, function(err, user) {
                 if(err){
                     return status(500).send("There was a problem adding the information to the database.");
@@ -97,6 +98,7 @@ router.get('/:id', function(req, res) {
     })
 })
 
+//return user by jwt
 router.get('/', function(req, res) {
     const token = req.query.token;
     if(!token){
