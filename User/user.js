@@ -2,20 +2,12 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    courses: [
-        {
-            id: String
-        }
-    ],
+    courses: [String],
     breaks: [
         {
             timeStart: Number,
             timeEnd: Number,
-            days: [
-                {
-                    day: String
-                }
-            ]
+            days: [String]
         }
     ]
 });
