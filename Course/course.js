@@ -8,14 +8,23 @@ var CourseSchema = new mongoose.Schema({
     credits: [String], 
     sections: [{
         number: String,
-        classNumber: Number,
+        classNumber: String,
         roomNum: String,
         days: String,
         timeStart: String,
         timeEnd: String,
         instructor: String
     }],
-    discussions: [String]
+    discussions: [{
+        number: String,
+        classNumber: String,
+        roomNum: String,
+        days: String,
+        timeStart: String,
+        timeEnd: String,
+        instructor: String,
+        requiredSection: String
+    }]
 });
 
 module.exports = mongoose.model('Course', CourseSchema);

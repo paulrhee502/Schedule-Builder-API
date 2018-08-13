@@ -62,7 +62,7 @@ router.delete('/:id', function(req, res){
     })
 })
 
-//update user in database
+//update course in database
 router.put('/:id', function(req, res){
     Course.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err, course){
         if(err){
