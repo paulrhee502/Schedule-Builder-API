@@ -108,7 +108,12 @@ router.get('/', function(req, res) {
         if(err){
             return res.status(500).send(err);
         }
-        return res.status(200).send(decoded);
+        User.findById(decoded.user._id, function(err, user){
+            if(err){
+                return res.status(500).send("There was a problem finding the user by jwt");
+            }
+            return res.status(200).send(user);
+        });
     });
 })
 

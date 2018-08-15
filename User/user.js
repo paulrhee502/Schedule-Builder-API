@@ -10,8 +10,8 @@ var UserSchema = new mongoose.Schema({
     ],
     breaks: [
         {
-            timeStart: Number,
-            timeEnd: Number,
+            timeStart: String,
+            timeEnd: String,
             days: String
         }
     ]
