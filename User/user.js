@@ -10,12 +10,17 @@ var UserSchema = new mongoose.Schema({
     ],
     sections: [
         {
-            courseID: String,
+            courseName: String,
+            courseSubject: String,
+            courseLevel: String,
+            courseCredits: [String],
+            number: String,
             timeStart: String,
             timeEnd: String,
             days: String,
             discussions: [
                 {
+                    number: String,
                     timeStart: String,
                     timeEnd: String,
                     days: String
