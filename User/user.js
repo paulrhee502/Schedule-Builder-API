@@ -8,6 +8,21 @@ var UserSchema = new mongoose.Schema({
             ref: 'Course'
         }
     ],
+    sections: [
+        {
+            courseID: String,
+            timeStart: String,
+            timeEnd: String,
+            days: String,
+            discussions: [
+                {
+                    timeStart: String,
+                    timeEnd: String,
+                    days: String
+                }
+            ]
+        }
+    ],
     breaks: [
         {
             timeStart: String,

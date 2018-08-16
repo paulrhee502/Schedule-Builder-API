@@ -13,17 +13,16 @@ var CourseSchema = new mongoose.Schema({
         days: String,
         timeStart: String,
         timeEnd: String,
-        instructor: String
-    }],
-    discussions: [{
-        number: String,
-        classNumber: String,
-        roomNum: String,
-        days: String,
-        timeStart: String,
-        timeEnd: String,
         instructor: String,
-        requiredSection: String
+        discussions: [{
+            number: String,
+            classNumber: String,
+            roomNum: String,
+            days: String,
+            timeStart: String,
+            timeEnd: String,
+            instructor: String,
+        }]
     }]
 });
 
